@@ -16,7 +16,7 @@ public class Recursao {
     */
     public static int fatorial(int n) {
         if(n < 0) {
-            throw new IllegalArgumentException("número deve ser positivo");
+            throw new IllegalArgumentException("número deve ser zero ou positivo");
         }
         if(n == 0 || n == 1) {
             return 1;
@@ -37,7 +37,7 @@ public class Recursao {
     */
     public static int somatorio(int n) {
         if(n < 0) {
-            throw new IllegalArgumentException("número deve ser positivo");
+            throw new IllegalArgumentException("número deve ser zero ou positivo");
         }
 
         if(n == 0) return 0;
@@ -48,21 +48,21 @@ public class Recursao {
     /*
     Modelagem:
     Ex.: n=-1  n=0  n=5
-    1. Situação de erro: n<0
+    1. Situação de erro: n<=0
     2. Situações de parada:
-        n==0 -> 0
         n==1 -> 1
+        n==2 -> 1
     3. Recursão:
         fibonacci(n-1) + fibonacci(n-2)
         fibonacci(4) + fibonacci(3)
     */
     public static int fibonacci(int n) {
-        if(n < 0) {
+        if(n <= 0) {
             throw new IllegalArgumentException("número deve ser positivo");
         }
 
-        if(n == 0) return 0;
         if(n == 1) return 1;
+        if(n == 2) return 1;
 
         return fibonacci(n-1) + fibonacci(n-2);
     }
@@ -88,5 +88,65 @@ public class Recursao {
         }
 
         return k + somatorioEntreNumeros(k+1, j);
+    }
+
+    /*
+    Modelagem:
+    Ex.: str=null  str=""  str="a"  str="abba"
+    1. Situação de erro:
+        str == null -> IllegalArgumentException
+    2. Situações de parada:
+        str.comprimento == 0 -> true
+        str.comprimento == 1 -> true
+        pos == (str.comprimento)/2 -> true
+        str[pos] != str[str.comprimento-1-pos] -> false
+    3. Recursão:
+        true && palindromo(str, pos+1)
+        true && palindromo('abba', 1)
+    */
+    public static boolean palindromo(String str) {
+        if(str == null){
+            throw new IllegalArgumentException("String não pode ser null");
+        }
+
+        if(str.length() == 0 || str.length() == 1)
+            return true;
+
+        return palindromo(str, 0);
+    }
+    public static boolean palindromo(String str, int pos) {
+        if(pos == str.length()/2)
+            return true;
+
+        if(str.charAt(pos) != str.charAt(str.length()-1-pos))
+            return false;
+
+        return true && palindromo(str, pos+1);
+    }
+
+    /*
+    Modelagem:
+    Ex.: n=-1  n=0  n=6
+    1. Situação de erro:
+        n < 0 -> IllegalArgumentException
+    2. Situações de parada:
+        n == 0 -> ""
+    3. Recursão:
+        convBase2(n/2) + "1" ou convBase2(n/2) + "0"
+        convBase2(3) + "0"
+    */
+    public static String convBase2(int n) {
+        if(n<0) {
+            throw new IllegalArgumentException("número não pode ser negativo");
+        }
+
+        if(n == 0) return "";
+
+        if(n%2 != 0) {
+            return convBase2(n/2) + "1";
+        }
+        else {
+            return convBase2(n/2) + "0";
+        }
     }
 }
