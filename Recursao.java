@@ -1,6 +1,7 @@
+import java.util.ArrayList;
+
 public class Recursao {
     public static void main(String[] args) {
-
     }
 
     /*
@@ -149,4 +150,60 @@ public class Recursao {
             return convBase2(n/2) + "0";
         }
     }
+
+    /*
+    Modelagem:
+    Ex.: arr=null  arr={}  arr={1,2,3}
+    1. Situação de erro:
+        arr == null -> IllegalArgumentException
+    2. Situações de parada:
+        arr.size() == 0 -> 0
+    3. Recursão:
+        arr.remove(0) + somatorio2(arr)
+        1 + somatorio2({2,3})
+    */
+    public static int somatorio2(ArrayList<Integer> arr) {
+        if(arr == null)
+            throw new IllegalArgumentException("arraylist não pode ser null");
+
+        if(arr.size() == 0)
+            return 0;
+        
+        return arr.remove(0) + somatorio2(arr);
+    }
+
+    /*
+    Modelagem:
+    Ex.: arr=null  arr={}  arr={1,2,3}
+    1. Situação de erro:
+        arr == null -> IllegalArgumentException
+        arr.size() == 0 -> IllegalArgumentException
+    2. Situações de parada:
+        arr.size() == 0 -> maior (método auxiliar)
+    3. Recursão:
+        findBiggest(arr,maior)
+        findBiggest({2,3},1)
+    */
+    public static int findBiggest(ArrayList<Integer> arr) {
+        if(arr == null)
+            throw new IllegalArgumentException("arraylist não pode ser null");
+
+        if(arr.size() == 0) {
+            throw new IllegalArgumentException("arraylist não pode ser vazia");  
+        }
+
+        return findBiggest(arr, 0);
+    }
+    public static int findBiggest(ArrayList<Integer> arr, int maior) {
+        if(arr.size() == 0){
+            return maior;
+        }
+
+        int tmp = arr.remove(0);
+        if(tmp > maior)
+            return findBiggest(arr,tmp);
+        
+        return findBiggest(arr,maior);
+    }
+
 }
