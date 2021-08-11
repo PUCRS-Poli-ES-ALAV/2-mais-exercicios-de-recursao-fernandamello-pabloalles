@@ -206,4 +206,22 @@ public class Recursao {
         return findBiggest(arr,maior);
     }
 
+    /*
+    Modelagem:
+    Ex.: n=10  n=0  n=600  n=-10
+    1. Situação de erro:
+        Nenhuma
+    2. Situações de parada:
+        if(n==0) -> return 1;
+    3. Recursão:
+        1+nroDigit(n)
+        1+nroDigit(60)
+        1
+    */
+    public static int nroDigit(int n) {        
+        n = n/10;
+        if(n!=0)
+            return 1 + nroDigit(n);        
+        return 1;
+    }
 }
