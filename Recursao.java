@@ -208,6 +208,49 @@ public class Recursao {
 
     /*
     Modelagem:
+    Ex.: str="batata" match="ta"
+    1. Situação de erro:
+        str == null -> IllegalArgumentException
+        match == null -> IllegalArgumentException
+        str.comprimento == 0 -> IllegalArgumentException
+        match.comprimento == 0 -> IllegalArgumentException
+    2. Situações de parada:
+        indexM == (match.comprimento - 1) && match.charAt(indexM) != str.charAt(indexS) -> false
+        indexM == (match.comprimento - 1) && match.charAt(indexM) == str.charAt(indexS) -> true
+    3. Recursão:
+        if (str.charAt(indexS) == match.charAt(indexM)) {
+            return true && findSubStr(str, match, indexS+1, indexM+1);
+        }
+        else {
+            return findSubStr(str, match, indexS+1, indexM);
+        }
+    */
+    public static boolean findSubStr(String str, String match) {
+        if(str == null || match == null)
+            throw new IllegalArgumentException("string s cannot be null");
+        if(str.length() == 0 || match.length() == 0)
+            throw new IllegalArgumentException("string s cannot be empty");
+
+        return findSubStr(str, match, 0, 0);  
+    }
+    public static boolean findSubStr(String str, String match, int indexS, int indexM) {
+        if(indexM == (match.length() - 1)) {
+            if(match.charAt(indexM) != str.charAt(indexS))
+                return false;
+            else
+                return true;
+        }
+
+        if(str.charAt(indexS) == match.charAt(indexM)) {
+            return true && findSubStr(str, match, indexS+1, indexM+1);
+        }
+        else {
+            return findSubStr(str, match, indexS+1, indexM);
+        }
+    }
+
+    /*
+    Modelagem:
     Ex.: n=10  n=0  n=600  n=-10
     1. Situação de erro:
         Nenhuma
@@ -223,5 +266,54 @@ public class Recursao {
         if(n!=0)
             return 1 + nroDigit(n);        
         return 1;
+    }
+
+    /*
+    Modelagem:
+    Ex.: s=null  s="" s="a" s="abc"
+    1. Situação de erro:
+        s == null -> IllegalArgumentException
+        s.comprimento == 0 -> IllegalArgumentException (string vazia)
+    2. Situações de parada:
+        s.comprimento == 1 -> add(p+s) -> return a
+    3. Recursão:
+        for(i=0; i<s.comprimento; i++)
+            permutations(s[i], s[0...i]+s[i+1...s.comprimento], new ArrayList<String>())
+        
+        ex.:
+        for(i=0; i<"abc".comprimento; i++)
+            permutations("a", ""+"bc", new ArrayList<String>())
+    */
+    public static ArrayList<String> permutations(String s) {
+        if(s == null)
+            throw new IllegalArgumentException("string s cannot be null");
+        if(s.length() == 0)
+            throw new IllegalArgumentException("string s cannot be empty");
+
+        ArrayList<String> a = new ArrayList<String>();
+        return permutations("", s, a);
+    }
+    public static ArrayList<String> permutations(String p, String s, ArrayList<String> a) {
+        if(s.length() == 1) {
+            a.add(p+s);
+            return a;
+        }
+        for(int i=0; i<s.length(); i++) {
+            ArrayList<String> tmp = permutations(
+                ""+s.charAt(i), 
+                s.substring(0, i) + s.substring(i + 1, s.length()), 
+                new ArrayList<String>()
+            );
+
+            for(int j=0; j<tmp.size(); j++){
+                if(tmp.get(j).length() != s.length())
+                    tmp.set(j, s.charAt(i)+tmp.get(j));
+
+                if(!a.contains(tmp.get(j)))
+                    a.add(tmp.get(j));
+            }
+        }
+
+        return a;
     }
 }
